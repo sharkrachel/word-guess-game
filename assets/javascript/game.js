@@ -27,7 +27,6 @@ var words = [
 ];
 
 // empty variables
-var randomWord = "";
 var lettersInWord = [];
 var blanks = 0;
 var blankSpace = [];
@@ -36,27 +35,71 @@ var wrongGuess = [];
 // scores
 var win = 0;
 var losses = 0;
-var remaingingGuesses = 12;
+var remainingGuesses = 12;
+
+// utility functions
+
+function setInnerHtml(id, value) {
+  var element = document.getElementById(id);
+  element.innerHTML = value;
+}
 
 // choose a random word
-
+function randomWordGen () {
   randomWord = words[Math.floor(Math.random() * words.length)];
   console.log(randomWord);
+  return randomWord;
+  
+}
 
-  //display blank _ for letters of word
-
-  for (var i = 0; i < randomWord.length; i++) {
-    blankSpace[i] = "_";
-  }
-
-  console.log(blankSpace);
-  document.getElementById("game-board").innerHTML = " " + blankSpace.join(" "); 
 
 // Start Game
 
-document.onkeyup = function(event) {
+function initializeGame () {
+  var randomWord = "";
+  document.onkeyup = function (event) {
+    var keyCode = event.keyCode;
+    var userGuess = event.key;
+      if (keyCode === 32) {
+        randomWord = randomWordGen()
+        blankSpace = [];
+        for (var i = 0; i < randomWord.length; i++) {
+          blankSpace[i] = "_";
+        }
+        setInnerHtml("guesses-number", remainingGuesses);
+        setInnerHtml("win-number", win);
+        setInnerHtml("game-board", " " + blankSpace.join(" "));
+        console.log(blankSpace);
+      }
+      else {
+        // don't let guesses go below zero
+        remainingGuesses--;
+        setInnerHtml("guesses-number", remainingGuesses);
+        var isGuessWrong = true;
+        for (var i = 0; i < randomWord.length; i++) {
+          if (userGuess === randomWord[i]) {
+            isGuessWrong = false;
+            blankSpace[i] = userGuess;
+            setInnerHtml("game-board", " " + blankSpace.join(" "));
+          }
+        }
+        if (isGuessWrong === true) {
+          wrongGuess.push(userGuess);
+          setInnerHtml("wrong-letters", " " + wrongGuess.join(" "));
+        }
 
+      }
+  }
 }
+
+
+initializeGame() 
+
+  // Check Answers
+
+
+
+
 
 // // check answers
 
