@@ -16,7 +16,7 @@
 
 // TIME TO CODE
 
-// global variables
+// Global variables
 
 var words = [
   "spongebob",
@@ -26,74 +26,104 @@ var words = [
   "squidward"
 ];
 
-// empty variables
+// Empty variables
 var lettersInWord = [];
 var blanks = 0;
 var blankSpace = [];
 var wrongGuess = [];
 
-// scores
+// Scores
 var win = 0;
 var losses = 0;
 var remainingGuesses = 12;
 
-// utility functions
+// Utility functions
 
 function setInnerHtml(id, value) {
   var element = document.getElementById(id);
   element.innerHTML = value;
 }
 
-// choose a random word
-function randomWordGen () {
+// Choose a random word
+function randomWordGen() {
   randomWord = words[Math.floor(Math.random() * words.length)];
   console.log(randomWord);
   return randomWord;
-  
+
 }
 
 
 // Start Game
 
-function initializeGame () {
+function initializeGame() {
   var randomWord = "";
   document.onkeyup = function (event) {
     var keyCode = event.keyCode;
     var userGuess = event.key;
-      if (keyCode === 32) {
-        randomWord = randomWordGen()
-        blankSpace = [];
-        for (var i = 0; i < randomWord.length; i++) {
-          blankSpace[i] = "_";
-        }
-        setInnerHtml("guesses-number", remainingGuesses);
-        setInnerHtml("win-number", win);
-        setInnerHtml("game-board", " " + blankSpace.join(" "));
-        console.log(blankSpace);
+    // Space bar to start game
+    if (keyCode === 32) {
+      // Generate random word
+      randomWord = randomWordGen()
+      remainingGuesses = 12;
+      wrongGuess = [];
+      // Black spaces to replace letters
+      blankSpace = [];
+      for (var i = 0; i < randomWord.length; i++) {
+        blankSpace[i] = "_";
       }
-      else {
-        // don't let guesses go below zero
-        remainingGuesses--;
-        setInnerHtml("guesses-number", remainingGuesses);
-        var isGuessWrong = true;
-        for (var i = 0; i < randomWord.length; i++) {
-          if (userGuess === randomWord[i]) {
-            isGuessWrong = false;
-            blankSpace[i] = userGuess;
-            setInnerHtml("game-board", " " + blankSpace.join(" "));
+      // Show variables on HTML page
+      setInnerHtml("guesses-number", remainingGuesses);
+      setInnerHtml("win-number", win);
+      setInnerHtml("game-board", " " + blankSpace.join(" "));
+      setInnerHtml("wrong-letters", wrongGuess);
+      console.log(blankSpace);
+    }
+    // Start guesses
+    else {
+      setInnerHtml("guesses-number", remainingGuesses);
+      // If the guess is correct
+      var isGameWon = false;
+      var isGuessWrong = true;
+      for (var i = 0; i < randomWord.length; i++) {
+        if (userGuess === randomWord[i]) {
+          isGameWon = true;
+          isGuessWrong = false;
+          blankSpace[i] = userGuess;
+          setInnerHtml("game-board", " " + blankSpace.join(" "));
+          for (var j = 0; j < blankSpace.length; j++) {
+            if (blankSpace[j] === "_") {
+              isGameWon = false;
+            }
           }
+          if (isGameWon === true) {
+            win++;
+            alert("you are a winner!");
+          }
+
         }
-        if (isGuessWrong === true) {
+      }
+      // If the guess is incorrect
+      if (isGuessWrong === true) {
+        if (remainingGuesses > 0) {
+          remainingGuesses--;
+          setInnerHtml("guesses-number", remainingGuesses);
           wrongGuess.push(userGuess);
           setInnerHtml("wrong-letters", " " + wrongGuess.join(" "));
         }
+        if (remainingGuesses === 0) {
+          alert("you are a loser");
 
+          // Restart game
+          initializeGame();
+        }
       }
+
+    }
   }
 }
 
 
-initializeGame() 
+initializeGame()
 
   // Check Answers
 
