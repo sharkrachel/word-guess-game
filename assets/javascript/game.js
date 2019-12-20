@@ -76,6 +76,7 @@ function initializeGame() {
       setInnerHtml("win-number", win);
       setInnerHtml("game-board", " " + blankSpace.join(" "));
       setInnerHtml("wrong-letters", wrongGuess);
+
       console.log(blankSpace);
     }
     // Start guesses
@@ -97,77 +98,40 @@ function initializeGame() {
           }
           if (isGameWon === true) {
             win++;
-            alert("you are a winner!");
+            alert("You are a WINNER! Press 'OK' and then the 'Space bar' to play again")
+            //   if (randomWord === words[0]) {
+            //     document.querySelector("#winning-image").innerHTML = "<img src='assets/images/Spongebob.jpg'>";
           }
-
+          // if (randomWord === words[1]) {
+          // setInnerHtml("winning-image", "<img src='assets/images/Patrick Star.jpeg'>");
+          // }
+          // alert("you are a winner!");
         }
+
       }
-      // If the guess is incorrect
-      if (isGuessWrong === true) {
-        if (remainingGuesses > 0) {
-          remainingGuesses--;
-          setInnerHtml("guesses-number", remainingGuesses);
-          wrongGuess.push(userGuess);
-          setInnerHtml("wrong-letters", " " + wrongGuess.join(" "));
-        }
-        if (remainingGuesses === 0) {
-          alert("you are a loser");
-
-          // Restart game
-          initializeGame();
-        }
-      }
-
     }
+    // If the guess is incorrect
+    if (isGuessWrong === true) {
+      if (remainingGuesses > 0) {
+        remainingGuesses--;
+        setInnerHtml("guesses-number", remainingGuesses);
+        wrongGuess.push(userGuess);
+        setInnerHtml("wrong-letters", " " + wrongGuess.join(" "));
+      }
+      if (remainingGuesses === 0) {
+        alert("You are a LOSER! Press 'OK' and then the 'Space bar' to play again");
+        initializeGame();
+
+        // Restart game
+      
+      }
+    }
+
   }
+
+
 }
 
-
-initializeGame()
-
-  // Check Answers
-
-
-
-
-
-// // check answers
-
-// function checkLetters(letter) {
-//   for (var i = 0; i < blanks; i++) {
-//     if (randomWord[i] === letter) {
-//       lettersInWord = true;
-//     }
-//   }
-
-//   if (lettersInWord) {
-//     for (var i = 0; i < blanks; i++) {
-//       if (randomWord[i] === letter) {
-//         blanksAndCorrect[i] = letter;
-//       }
-//     }
-//   }
-
-//   else {
-//     wrongGuess.push(letter);
-//     remaingingGuesses --;
-//   }
-// }
-
-// // if the player wins
-
-// function complete () {
-
-
-
-// // generate a random word from the array words
-
-// var randomWord = words[Math.floor(Math.random() * words.length)];
-
-// // replace letters from randomWord with _
-
-//   for (i = 0; i < randomWord.length; i++) {
-//     randomWord[i] = "_";
-//   }
-//   document.getElementById("game-board").innerHTML = randomWord.join(" ");
+  initializeGame()
+  
 
